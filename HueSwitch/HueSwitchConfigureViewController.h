@@ -1,5 +1,5 @@
 //
-//  HueSwitchViewController.h
+//  HueSwitchConfigureViewController.h
 //  HueSwitch
 //
 //  Created by Troy Stribling on 3/1/14.
@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HueSwitchViewController : UIViewController  <UIPageViewControllerDataSource>
-
+@interface HueSwitchConfigureViewController : UIViewController
 
 @end

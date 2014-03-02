@@ -21,6 +21,9 @@
 		052B398E18C27A290077896B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B397018C27A290077896B /* UIKit.framework */; };
 		052B399618C27A290077896B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 052B399418C27A290077896B /* InfoPlist.strings */; };
 		052B399818C27A290077896B /* HueSwitchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B399718C27A290077896B /* HueSwitchTests.m */; };
+		052B39A318C28E9A0077896B /* HueSwitchStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B39A218C28E9A0077896B /* HueSwitchStatusViewController.m */; };
+		052B39A918C28F220077896B /* HueSwitchConfigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B39A818C28F220077896B /* HueSwitchConfigureViewController.m */; };
+		052B39AC18C28FBE0077896B /* HueSwitchScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B39AB18C28FBE0077896B /* HueSwitchScenesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,12 @@
 		052B399318C27A290077896B /* HueSwitchTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HueSwitchTests-Info.plist"; sourceTree = "<group>"; };
 		052B399518C27A290077896B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		052B399718C27A290077896B /* HueSwitchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HueSwitchTests.m; sourceTree = "<group>"; };
+		052B39A118C28E9A0077896B /* HueSwitchStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSwitchStatusViewController.h; sourceTree = "<group>"; };
+		052B39A218C28E9A0077896B /* HueSwitchStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchStatusViewController.m; sourceTree = "<group>"; };
+		052B39A718C28F220077896B /* HueSwitchConfigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSwitchConfigureViewController.h; sourceTree = "<group>"; };
+		052B39A818C28F220077896B /* HueSwitchConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchConfigureViewController.m; sourceTree = "<group>"; };
+		052B39AA18C28FBE0077896B /* HueSwitchScenesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSwitchScenesViewController.h; sourceTree = "<group>"; };
+		052B39AB18C28FBE0077896B /* HueSwitchScenesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchScenesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,12 +121,19 @@
 		052B397218C27A290077896B /* HueSwitch */ = {
 			isa = PBXGroup;
 			children = (
+				052B39BC18C3BC760077896B /* Images */,
 				052B397B18C27A290077896B /* HueSwitchAppDelegate.h */,
 				052B397C18C27A290077896B /* HueSwitchAppDelegate.m */,
-				052B397E18C27A290077896B /* Main.storyboard */,
+				052B39A718C28F220077896B /* HueSwitchConfigureViewController.h */,
+				052B39A818C28F220077896B /* HueSwitchConfigureViewController.m */,
+				052B39AA18C28FBE0077896B /* HueSwitchScenesViewController.h */,
+				052B39AB18C28FBE0077896B /* HueSwitchScenesViewController.m */,
+				052B39A118C28E9A0077896B /* HueSwitchStatusViewController.h */,
+				052B39A218C28E9A0077896B /* HueSwitchStatusViewController.m */,
 				052B398118C27A290077896B /* HueSwitchViewController.h */,
 				052B398218C27A290077896B /* HueSwitchViewController.m */,
 				052B398418C27A290077896B /* Images.xcassets */,
+				052B397E18C27A290077896B /* Main.storyboard */,
 				052B397318C27A290077896B /* Supporting Files */,
 			);
 			path = HueSwitch;
@@ -150,6 +166,13 @@
 				052B399418C27A290077896B /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		052B39BC18C3BC760077896B /* Images */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,7 +273,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				052B39AC18C28FBE0077896B /* HueSwitchScenesViewController.m in Sources */,
 				052B397918C27A290077896B /* main.m in Sources */,
+				052B39A918C28F220077896B /* HueSwitchConfigureViewController.m in Sources */,
+				052B39A318C28E9A0077896B /* HueSwitchStatusViewController.m in Sources */,
 				052B398318C27A290077896B /* HueSwitchViewController.m in Sources */,
 				052B397D18C27A290077896B /* HueSwitchAppDelegate.m in Sources */,
 			);
