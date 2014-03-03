@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 gnos.us. All rights reserved.
 //
 
+#import <BlueCap/BlueCap.h>
 #import "HueSwitchAppDelegate.h"
 
 @implementation HueSwitchAppDelegate

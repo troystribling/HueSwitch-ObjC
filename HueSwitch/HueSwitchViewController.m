@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 gnos.us. All rights reserved.
 //
 
+#import <BlueCap/BlueCap.h>
 #import "HueSwitchViewController.h"
 #import "HueSwitchStatusViewController.h"
 #import "HueSwitchScenesViewController.h"
@@ -15,6 +16,11 @@
 @interface HueSwitchViewController ()
 
 @property(nonatomic, strong) UIPageViewController*  pageViewController;
+
+- (void)powerOn;
+- (void)startScan;
+- (void)connectPeripheral:(BlueCapPeripheral*)peripheral;
+- (void)getServicesAndCharacteristics:(BlueCapPeripheral*)peripheral;
 
 @end
 
@@ -31,6 +37,7 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+    [self powerOn];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,6 +45,34 @@
 }
 
 #pragma mark - Private -
+
+- (void)powerOn {
+    BlueCapCentralManager* central = [BlueCapCentralManager sharedInstance];
+    if (!central.isScanning) {
+        [central powerOn:^{
+            [self startScan];
+        } afterPowerOff:^{
+        }];
+    }
+}
+
+- (void)startScan {
+    BlueCapCentralManager* central = [BlueCapCentralManager sharedInstance];
+    [central startScanning:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
+        [self connectPeripheral:peripheral];
+    }];
+}
+
+- (void)connectPeripheral:(BlueCapPeripheral*)peripheral {
+    [peripheral connectAndReconnectOnDisconnect:^(BlueCapPeripheral* cPeripheral, NSError* __error) {
+        [self getServicesAndCharacteristics:cPeripheral];
+    }];
+}
+
+- (void)getServicesAndCharacteristics:(BlueCapPeripheral*)peripheral {
+    [peripheral discoverAllServicesAndCharacteristics:^(BlueCapPeripheral* peripheral, NSError* error) {
+    }];
+}
 
 #pragma mark - UIPageViewControllerDataSource -
 

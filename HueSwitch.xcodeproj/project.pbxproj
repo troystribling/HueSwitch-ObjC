@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		050EA8CA18C446ED00D388D1 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050EA8C918C446ED00D388D1 /* CoreBluetooth.framework */; };
+		050EA8CB18C446F400D388D1 /* libBluecap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 050EA8C618C446D000D388D1 /* libBluecap.a */; };
 		052B396D18C27A290077896B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B396C18C27A290077896B /* Foundation.framework */; };
 		052B396F18C27A290077896B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B396E18C27A290077896B /* CoreGraphics.framework */; };
 		052B397118C27A290077896B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B397018C27A290077896B /* UIKit.framework */; };
@@ -28,6 +30,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		050EA8C518C446D000D388D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 050EA8C018C446D000D388D1 /* BlueCap.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05AA669517B868F90019AC3C;
+			remoteInfo = Bluecap;
+		};
+		050EA8C718C446D000D388D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 050EA8C018C446D000D388D1 /* BlueCap.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05AA66A517B868F90019AC3C;
+			remoteInfo = BluecapTests;
+		};
+		050EA8CD18C447C900D388D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 050EA8C018C446D000D388D1 /* BlueCap.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 05AA669417B868F90019AC3C;
+			remoteInfo = Bluecap;
+		};
 		052B398F18C27A290077896B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 052B396118C27A290077896B /* Project object */;
@@ -38,6 +61,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		050EA8C018C446D000D388D1 /* BlueCap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BlueCap.xcodeproj; path = External/BlueCap/BlueCap.xcodeproj; sourceTree = "<group>"; };
+		050EA8C918C446ED00D388D1 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		052B396918C27A290077896B /* HueSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HueSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		052B396C18C27A290077896B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		052B396E18C27A290077896B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -72,6 +97,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				050EA8CB18C446F400D388D1 /* libBluecap.a in Frameworks */,
+				050EA8CA18C446ED00D388D1 /* CoreBluetooth.framework in Frameworks */,
 				052B396F18C27A290077896B /* CoreGraphics.framework in Frameworks */,
 				052B397118C27A290077896B /* UIKit.framework in Frameworks */,
 				052B396D18C27A290077896B /* Foundation.framework in Frameworks */,
@@ -91,9 +118,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		050EA8C118C446D000D388D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				050EA8C618C446D000D388D1 /* libBluecap.a */,
+				050EA8C818C446D000D388D1 /* BluecapTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		052B396018C27A290077896B = {
 			isa = PBXGroup;
 			children = (
+				050EA8C018C446D000D388D1 /* BlueCap.xcodeproj */,
 				052B397218C27A290077896B /* HueSwitch */,
 				052B399118C27A290077896B /* HueSwitchTests */,
 				052B396B18C27A290077896B /* Frameworks */,
@@ -113,6 +150,7 @@
 		052B396B18C27A290077896B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				050EA8C918C446ED00D388D1 /* CoreBluetooth.framework */,
 				052B396C18C27A290077896B /* Foundation.framework */,
 				052B396E18C27A290077896B /* CoreGraphics.framework */,
 				052B397018C27A290077896B /* UIKit.framework */,
@@ -186,6 +224,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				050EA8CE18C447C900D388D1 /* PBXTargetDependency */,
 			);
 			name = HueSwitch;
 			productName = HueSwitch;
@@ -236,6 +275,12 @@
 			mainGroup = 052B396018C27A290077896B;
 			productRefGroup = 052B396A18C27A290077896B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 050EA8C118C446D000D388D1 /* Products */;
+					ProjectRef = 050EA8C018C446D000D388D1 /* BlueCap.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				052B396818C27A290077896B /* HueSwitch */,
@@ -243,6 +288,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		050EA8C618C446D000D388D1 /* libBluecap.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBluecap.a;
+			remoteRef = 050EA8C518C446D000D388D1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		050EA8C818C446D000D388D1 /* BluecapTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = BluecapTests.xctest;
+			remoteRef = 050EA8C718C446D000D388D1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		052B396718C27A290077896B /* Resources */ = {
@@ -291,6 +353,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		050EA8CE18C447C900D388D1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Bluecap;
+			targetProxy = 050EA8CD18C447C900D388D1 /* PBXContainerItemProxy */;
+		};
 		052B399018C27A290077896B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 052B396818C27A290077896B /* HueSwitch */;
@@ -406,6 +473,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HueSwitch/HueSwitch-Prefix.pch";
 				INFOPLIST_FILE = "HueSwitch/HueSwitch-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -419,6 +487,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "HueSwitch/HueSwitch-Prefix.pch";
 				INFOPLIST_FILE = "HueSwitch/HueSwitch-Info.plist";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

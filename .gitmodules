@@ -1,0 +1,3 @@
+[submodule "External/BlueCap"]
+	path = External/BlueCap
+	url = git@github.com:troystribling/BlueCap.git
