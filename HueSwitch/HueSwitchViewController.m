@@ -9,7 +9,7 @@
 #import "HueSwitchViewController.h"
 #import "HueSwitchStatusViewController.h"
 #import "HueSwitchScenesViewController.h"
-#import "HueSwitchConfigureViewController.h"
+#import "HueSwitchConfigureLocationViewController.h"
 
 #define NUM
 @interface HueSwitchViewController ()
@@ -46,7 +46,9 @@
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
         nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
     } else if ([viewController isKindOfClass:[HueSwitchScenesViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureViewController"];
+        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureLocationViewController"];
+    } else if ([viewController isKindOfClass:[HueSwitchConfigureLocationViewController class]]) {
+        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureAutoSwitchViewController"];
     } else {
         nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
     }
@@ -56,17 +58,19 @@
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     UIViewController* nextViewController = nil;
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureViewController"];
+        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureAutoSwitchViewController"];
     } else if ([viewController isKindOfClass:[HueSwitchScenesViewController class]]) {
         nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
-    } else {
+    } else  if ([viewController isKindOfClass:[HueSwitchConfigureLocationViewController class]]){
         nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
+    } else {
+        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureAutoSwitchViewController"];
     }
     return nextViewController;
 }
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController*)pageViewController {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)presentationIndexForPageViewController:(UIPageViewController*)pageViewController {

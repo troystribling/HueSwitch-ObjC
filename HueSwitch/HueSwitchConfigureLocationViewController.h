@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HueSwitchConfigureViewController : UIViewController
+@interface HueSwitchConfigureLocationViewController : UIViewController
 
 @end

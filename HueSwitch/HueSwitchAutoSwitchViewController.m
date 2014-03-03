@@ -1,18 +1,18 @@
 //
-//  HueSwitchConfigureViewController.m
+//  HueSwitchAutoSwitchViewController.m
 //  HueSwitch
 //
-//  Created by Troy Stribling on 3/1/14.
+//  Created by Troy Stribling on 3/2/14.
 //  Copyright (c) 2014 gnos.us. All rights reserved.
 //
 
-#import "HueSwitchConfigureViewController.h"
+#import "HueSwitchAutoSwitchViewController.h"
 
-@interface HueSwitchConfigureViewController ()
+@interface HueSwitchAutoSwitchViewController ()
 
 @end
 
-@implementation HueSwitchConfigureViewController
+@implementation HueSwitchAutoSwitchViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
