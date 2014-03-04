@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5451767F-3494-472B-8F1A-6B6759911766</string>
+	<key>IDESourceControlProjectName</key>
+	<string>HueSwitch</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>075B3179-88A8-4288-81D9-29FFB001144B</key>
+		<string>ssh://github.com/troystribling/BlueCap.git</string>
+		<key>802444FA-B7E4-4741-A238-4ADCE8B00249</key>
+		<string>ssh://github.com/troystribling/HueSwitch.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>HueSwitch.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>075B3179-88A8-4288-81D9-29FFB001144B</key>
+		<string>../../External/BlueCap</string>
+		<key>802444FA-B7E4-4741-A238-4ADCE8B00249</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/troystribling/HueSwitch.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>802444FA-B7E4-4741-A238-4ADCE8B00249</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>075B3179-88A8-4288-81D9-29FFB001144B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BlueCap</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>802444FA-B7E4-4741-A238-4ADCE8B00249</string>
+			<key>IDESourceControlWCCName</key>
+			<string>HueSwitch</string>
+		</dict>
+	</array>
+</dict>
+</plist>
