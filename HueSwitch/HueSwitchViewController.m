@@ -99,7 +99,7 @@
     } else  if ([viewController isKindOfClass:[HueSwitchConfigureLocationViewController class]]){
         nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
     } else {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureAutoSwitchViewController"];
+        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureLocationViewController"];
     }
     return nextViewController;
 }
