@@ -8,10 +8,14 @@
 
 #import <BlueCap/BlueCap.h>
 #import "HueSwitchAppDelegate.h"
+#import "HueSwitchProfile.h"
 
 @implementation HueSwitchAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [BLESIGGATTProfiles create];
+    [GnosusProfiles create];
+    [HueSwitchProfile create];
     UIPageControl* pageControl = [UIPageControl appearance];
     pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
     pageControl.currentPageIndicatorTintColor = [UIColor blackColor];

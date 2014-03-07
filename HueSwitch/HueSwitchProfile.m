@@ -141,12 +141,15 @@
                                                                                       HUE_LIGHTS_LIGHT_COLOR_HUE:blueCapUnsignedInt16BigFromData(data, NSMakeRange(3, 2))};
                                                                          }];
                                                                          [characteristicProfile stringValue:^NSDictionary*(NSDictionary* data) {
-                                                                             return @{};
+                                                                             return @{HUE_LIGHTS_LIGHT_ID:[[data objectForKey:HUE_LIGHTS_LIGHT_ID] stringValue],
+                                                                                      HUE_LIGHTS_LIGHT_COLOR_BRIGHTNESS:[[data objectForKey:HUE_LIGHTS_LIGHT_COLOR_BRIGHTNESS] stringValue],
+                                                                                      HUE_LIGHTS_LIGHT_COLOR_SATUARTION:[[data objectForKey:HUE_LIGHTS_LIGHT_COLOR_SATUARTION] stringValue],
+                                                                                      HUE_LIGHTS_LIGHT_COLOR_HUE:[[data objectForKey:HUE_LIGHTS_LIGHT_COLOR_HUE] stringValue]};
                                                                          }];
-                                                                         [characteristicProfile serializeString:^NSData*(NSDictionary* data) {
-                                                                             return nil;
-                                                                         }];
-                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromString:@{}];
+                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromObject:@{HUE_LIGHTS_LIGHT_ID:[NSNumber numberWithUnsignedChar:1],
+                                                                                                                                                       HUE_LIGHTS_LIGHT_COLOR_BRIGHTNESS:[NSNumber numberWithUnsignedChar:100],
+                                                                                                                                                       HUE_LIGHTS_LIGHT_COLOR_SATUARTION:[NSNumber numberWithUnsignedChar:125],
+                                                                                                                                                       HUE_LIGHTS_LIGHT_COLOR_HUE:[NSNumber numberWithUnsignedShort:20000]}];
                                                                      }];
                                    
                                    // apply commands
@@ -170,9 +173,9 @@
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
                                                                          [characteristicProfile serializeObject:^NSData*(id data) {
                                                                              uint8_t values = 0x0;
-                                                                             uint8_t allLights  = [[data objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS] intValue];
-                                                                             uint8_t sunrise    = [[data objectForKey:HUE_LIGHTS_SWITCH_SUNRISE] intValue];
-                                                                             uint8_t sunset     = [[data objectForKey:HUE_LIGHTS_SWITCH_SUNSET] intValue];
+                                                                             uint8_t allLights  = [[data objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS] unsignedCharValue];
+                                                                             uint8_t sunrise    = [[data objectForKey:HUE_LIGHTS_SWITCH_SUNRISE] unsignedCharValue];
+                                                                             uint8_t sunset     = [[data objectForKey:HUE_LIGHTS_SWITCH_SUNSET] unsignedCharValue];
                                                                              values = (allLights << 0) | (sunrise << 1) | (sunset << 2);
                                                                              return blueCapUnsignedCharToData(values);
                                                                          }];
@@ -197,12 +200,9 @@
                                                                              }
                                                                              return results;
                                                                          }];
-                                                                         [characteristicProfile serializeString:^NSData*(NSDictionary* data) {
-                                                                             return nil;
-                                                                         }];
-                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromString:@{HUE_LIGHTS_SWITCH_ALL_LIGHTS:@"ON",
-                                                                                                                                                       HUE_LIGHTS_SWITCH_SUNRISE:@"OFF",
-                                                                                                                                                       HUE_LIGHTS_SWITCH_SUNSET:@"ON"}];
+                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromObject:@{HUE_LIGHTS_SWITCH_ALL_LIGHTS:[NSNumber numberWithUnsignedChar:1],
+                                                                                                                                                       HUE_LIGHTS_SWITCH_SUNRISE:[NSNumber numberWithUnsignedChar:0],
+                                                                                                                                                       HUE_LIGHTS_SWITCH_SUNSET:[NSNumber numberWithUnsignedChar:1]}];
                                                                      }];
                                }];
 
