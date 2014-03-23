@@ -7,6 +7,7 @@
 //
 
 #import <BlueCap/BlueCap.h>
+#import "HueSwitchProfile.h"
 #import "HueSwitchViewController.h"
 #import "HueSwitchStatusViewController.h"
 #import "HueSwitchScenesViewController.h"
@@ -58,7 +59,7 @@
 
 - (void)startScan {
     BlueCapCentralManager* central = [BlueCapCentralManager sharedInstance];
-    [central startScanning:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
+    [central startScanningForPeripheralsWithServiceUUIDs:@[[CBUUID UUIDWithString:HUE_LIGHTS_SERVICE_UUID]] afterDiscovery:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
         [self connectPeripheral:peripheral];
     }];
 }
