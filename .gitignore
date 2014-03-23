@@ -1,5 +1,5 @@
 *.xcuserstate
 *.xcscheme
 *.xcbkptlist
-HueSwitch.xcodeproj/xcuserdata/*
+HueSwitch.xcodeproj/project.xcworkspace/xcuserdata/*
 .DS_Store
