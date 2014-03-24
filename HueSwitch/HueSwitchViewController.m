@@ -13,7 +13,8 @@
 #import "HueSwitchScenesViewController.h"
 #import "HueSwitchConfigureLocationViewController.h"
 
-#define NUM
+#define RECONNECT_DELAY                 5.0f
+
 @interface HueSwitchViewController ()
 
 @property(nonatomic, strong) UIPageViewController*  pageViewController;
@@ -59,15 +60,31 @@
 
 - (void)startScan {
     BlueCapCentralManager* central = [BlueCapCentralManager sharedInstance];
-    [central startScanningForPeripheralsWithServiceUUIDs:@[[CBUUID UUIDWithString:HUE_LIGHTS_SERVICE_UUID]] afterDiscovery:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
-        [self connectPeripheral:peripheral];
-    }];
+    [central startScanningForPeripheralsWithServiceUUIDs:@[[CBUUID UUIDWithString:HUE_LIGHTS_SERVICE_UUID]]
+                                          afterDiscovery:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
+                                              [self connectPeripheral:peripheral];
+                                              [central stopScanning];
+                                          }
+     ];
 }
 
 - (void)connectPeripheral:(BlueCapPeripheral*)peripheral {
-    [peripheral connectAndReconnectOnDisconnect:^(BlueCapPeripheral* cPeripheral, NSError* __error) {
-        [self getServicesAndCharacteristics:cPeripheral];
-    }];
+    [peripheral connect:^(BlueCapPeripheral* cperipheral, NSError* error) {
+            if (error) {
+                DLog(@"Connection error");
+//                [self startScan];
+            } else {
+                [self getServicesAndCharacteristics:cperipheral];
+            }
+        } afterPeripheralDisconnect:^(BlueCapPeripheral* dperipheral) {
+            DLog(@"Disconnected attempting reconnect");
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(RECONNECT_DELAY * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^{
+                [self connectPeripheral:dperipheral];
+            });
+
+        }
+     ];
 }
 
 - (void)getServicesAndCharacteristics:(BlueCapPeripheral*)peripheral {
