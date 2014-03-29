@@ -24,7 +24,7 @@
                                andProfile:^(BlueCapServiceProfile* serviceProfile) {
                                    
                                    // number of configured scenes
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0012-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_NUMBER_OF_SCENES_CHARACTERISTIC_UUID
                                                                            name:@"Number of Scenes"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead;
@@ -42,7 +42,7 @@
                                                                      }];
                                    
                                    // displayed scene ID
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0013-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SCENES_ID_CHARACTERISTIC_UUID
                                                                            name:@"Scene ID"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
@@ -64,7 +64,7 @@
                                                                      }];
                                    
                                    // displayed scene name
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0014-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SCENE_NAME_CHARACTERISTIC_UUID
                                                                            name:@"Scene Name"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
@@ -81,7 +81,7 @@
                                                                      }];
                                    
                                    // currently configured scene ID
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0015-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_CURRENT_SCENE_ID_CHARACTERISTIC_UUID
                                                                            name:@"Current Scene ID"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
@@ -103,7 +103,7 @@
                                                                      }];
                                    
                                    // number of lights
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0025-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_NUMBER_OF_LIGHTS_CHARACTERISTIC_UUID
                                                                            name:@"Number of Lights"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead;
@@ -121,7 +121,7 @@
                                                                      }];
                                    
                                    // displayed light color for displayed scene
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0022-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_LIGHT_COLOR_CHARACTERISTIC_UUID
                                                                            name:@"Light Color"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
@@ -153,7 +153,7 @@
                                                                      }];
                                    
                                    // apply commands
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0024-69aa-f316-3e78-4194989a6c1a"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_COMMAND_CHARACTERISTIC_UUID
                                                                             name:@"Command"
                                                                       andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                           characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
@@ -167,8 +167,8 @@
                                                                      }];
                                    
                                    // configure switches
-                                   [serviceProfile createCharacteristicWithUUID:@"2f0a0027-69aa-f316-3e78-4194989a6c1a"
-                                                                           name:@"Switches"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SWITCH_CHARACTERISTIC_UUID
+                                                                           name:@"Switch"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
                                                                          [characteristicProfile serializeObject:^NSData*(id data) {

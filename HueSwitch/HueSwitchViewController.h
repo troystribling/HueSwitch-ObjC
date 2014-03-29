@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HueSwitchViewController : UIViewController  <UIPageViewControllerDataSource>
+@interface HueSwitchViewController : UIViewController  <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
 
 @end

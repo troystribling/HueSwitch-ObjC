@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 gnos.us. All rights reserved.
 //
 
+#import <BlueCap/BlueCap.h>
+#import "HueSwitchProfile.h"
 #import "HueSwitchStatusViewController.h"
 
 @interface HueSwitchStatusViewController ()

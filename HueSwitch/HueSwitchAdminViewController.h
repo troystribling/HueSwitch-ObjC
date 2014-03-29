@@ -1,5 +1,5 @@
 //
-//  HueSwitchAutoSwitchViewController.h
+//  HueSwitchAdminViewController.h
 //  HueSwitch
 //
 //  Created by Troy Stribling on 3/2/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HueSwitchAutoSwitchViewController : UIViewController
+@interface HueSwitchAdminViewController : UIViewController
 
 @end
