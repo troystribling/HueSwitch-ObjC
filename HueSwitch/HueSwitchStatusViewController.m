@@ -12,7 +12,12 @@
 
 @interface HueSwitchStatusViewController ()
 
-@property (nonatomic, retain) BlueCapPeripheral* connectedPeripheral;
+@property(nonatomic, retain) BlueCapPeripheral*         connectedPeripheral;
+@property(nonatomic, retain) BlueCapService*            hueLightsService;
+@property(nonatomic, retain) BlueCapCharacteristic*     switchCharacteristic;
+@property(nonatomic, retain) BlueCapCharacteristic*     statusCharacteristic;
+
+- (void)getStatusValues;
 
 @end
 
@@ -40,6 +45,12 @@
             DLog(@"HueSwitchStatusViewController: %@ updated: %@", keyPath, change);
             self.connectedPeripheral = [change objectForKey:NSKeyValueChangeNewKey];
     }
+}
+
+#pragma mark - Private -
+
+- (void)getStatusValues {
+    
 }
 
 @end

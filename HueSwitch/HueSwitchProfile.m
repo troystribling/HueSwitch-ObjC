@@ -166,44 +166,26 @@
                                                                           characteristicProfile.initialValue = [characteristicProfile valueFromNamedObject:HUE_LIGHTS_COMMAND_ADD_SCENE];
                                                                      }];
                                    
-                                   // configure switches
+                                   // turn lights on and off
                                    [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SWITCH_CHARACTERISTIC_UUID
                                                                            name:@"Switch"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
-                                                                         [characteristicProfile serializeObject:^NSData*(id data) {
-                                                                             uint8_t values = 0x0;
-                                                                             uint8_t allLights  = [[data objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS] unsignedCharValue];
-                                                                             uint8_t sunrise    = [[data objectForKey:HUE_LIGHTS_SWITCH_SUNRISE] unsignedCharValue];
-                                                                             uint8_t sunset     = [[data objectForKey:HUE_LIGHTS_SWITCH_SUNSET] unsignedCharValue];
-                                                                             values = (allLights << 0) | (sunrise << 1) | (sunset << 2);
-                                                                             return blueCapUnsignedCharToData(values);
-                                                                         }];
-                                                                         [characteristicProfile deserializeData:^NSDictionary*(NSData* data) {
-                                                                             uint8_t values = [blueCapUnsignedCharFromData(data, NSMakeRange(0, 1)) unsignedCharValue];
-                                                                             uint8_t allLights  = values & (1 << 0);
-                                                                             uint8_t sunrise    = values & (1 << 1);
-                                                                             uint8_t sunset     = values & (1 << 2);
-                                                                             return @{HUE_LIGHTS_SWITCH_ALL_LIGHTS:[NSNumber numberWithUnsignedChar:allLights],
-                                                                                      HUE_LIGHTS_SWITCH_SUNRISE:[NSNumber numberWithUnsignedChar:sunrise],
-                                                                                      HUE_LIGHTS_SWITCH_SUNSET:[NSNumber numberWithUnsignedChar:sunset]};
-                                                                         }];
-                                                                         [characteristicProfile stringValue:^NSDictionary*(NSDictionary* data) {
-                                                                             NSMutableDictionary* results = [NSMutableDictionary dictionary];
-                                                                             for (NSString* key in [data allKeys]) {
-                                                                                 int result = [[data objectForKey:key] intValue];
-                                                                                 if (result == 0) {
-                                                                                     [results setObject:@"OFF" forKey:key];
-                                                                                 } else {
-                                                                                     [results setObject:@"ON" forKey:key];
-                                                                                 }
-                                                                             }
-                                                                             return results;
-                                                                         }];
-                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromObject:@{HUE_LIGHTS_SWITCH_ALL_LIGHTS:[NSNumber numberWithUnsignedChar:1],
-                                                                                                                                                       HUE_LIGHTS_SWITCH_SUNRISE:[NSNumber numberWithUnsignedChar:0],
-                                                                                                                                                       HUE_LIGHTS_SWITCH_SUNSET:[NSNumber numberWithUnsignedChar:1]}];
+                                                                         [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF_VALUE)    named:HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF];
+                                                                         [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON_VALUE)     named:HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON];
+                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromNamedObject:HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF];
                                                                      }];
+                                   
+                                   // light connection status
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_STATUS_CHARACTERISTIC_UUID
+                                                                           name:@"Status"
+                                                                     andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
+                                                                         characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
+                                                                         [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_STATUS_OFF_LINE_VALUE)    named:HUE_LIGHTS_STATUS_OFF_LINE];
+                                                                         [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_STATUS_ON_LINE_VALUE)     named:HUE_LIGHTS_STATUS_ON_LINE];
+                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromNamedObject:HUE_LIGHTS_STATUS_ON_LINE];
+                                                                     }];
+                                   
                                }];
 
 }

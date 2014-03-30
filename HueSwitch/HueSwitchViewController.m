@@ -24,7 +24,7 @@
 @property(nonatomic, assign) BOOL                           scanning;
 @property(nonatomic, retain) NSArray*                       pages;
 @property(nonatomic, retain) HueSwitchAdminViewController*  adminViewController;
-
+@property(nonatomic, assign) NSInteger                      connectionStatus;
 
 - (void)powerOn;
 - (void)startScanning;
