@@ -12,13 +12,16 @@
 
 @interface HueSwitchStatusViewController ()
 
+@property (nonatomic, retain) BlueCapPeripheral* connectedPeripheral;
+
 @end
 
 @implementation HueSwitchStatusViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
     if (self) {
+        self.connectedPeripheral = nil;
     }
     return self;
 }
@@ -29,6 +32,14 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context {
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(connectedPeripheral))]) {
+        if ([[change objectForKey:NSKeyValueChangeKindKey] integerValue] == NSKeyValueChangeSetting)
+            DLog(@"HueSwitchStatusViewController: %@ updated: %@", keyPath, change);
+            self.connectedPeripheral = [change objectForKey:NSKeyValueChangeNewKey];
+    }
 }
 
 @end

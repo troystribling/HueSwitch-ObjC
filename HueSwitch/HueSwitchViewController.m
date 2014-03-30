@@ -11,15 +11,20 @@
 #import "HueSwitchViewController.h"
 #import "HueSwitchStatusViewController.h"
 #import "HueSwitchScenesViewController.h"
-#import "HueSwitchConfigureLocationViewController.h"
+#import "HueSwitchLocationViewController.h"
+#import "HueSwitchAdminViewController.h"
 
 #define RECONNECT_DELAY                 5.0f
 #define SCAN_TIMEOUT                    10.0f
 
 @interface HueSwitchViewController ()
 
-@property(nonatomic, strong) UIPageViewController*  pageViewController;
-@property(nonatomic, assign) BOOL                   scanning;
+@property(nonatomic, strong) UIPageViewController*          pageViewController;
+@property(nonatomic, retain) BlueCapPeripheral*             connectedPeripheral;
+@property(nonatomic, assign) BOOL                           scanning;
+@property(nonatomic, retain) NSArray*                       pages;
+@property(nonatomic, retain) HueSwitchAdminViewController*  adminViewController;
+
 
 - (void)powerOn;
 - (void)startScanning;
@@ -27,14 +32,22 @@
 - (void)connectPeripheral:(BlueCapPeripheral*)peripheral;
 - (void)getServices:(BlueCapPeripheral*)peripheral;
 - (void)getCharacteristics:(BlueCapService*)service;
+- (void)bond:(BlueCapPeripheral*)peripheral;
 - (void)setBonded:(BOOL)bonded;
 - (BOOL)bonded;
-- (void)bond:(BlueCapPeripheral*)peripheral;
 - (void)timeoutBondedScan;
 
 @end
 
 @implementation HueSwitchViewController
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        self.connectedPeripheral = nil;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,6 +61,15 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+    HueSwitchStatusViewController* statusController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
+    [self addObserver:statusController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    HueSwitchScenesViewController* scenesController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
+    [self addObserver:scenesController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    HueSwitchLocationViewController* locationsController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
+    [self addObserver:locationsController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    self.pages = @[statusController, scenesController, locationsController];
+    self.adminViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchAdminViewController"];
+    [self addObserver:self.adminViewController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
     [self powerOn];
 }
 
@@ -73,8 +95,9 @@
     if ([self bonded]) {
         [self timeoutBondedScan];
         [central startScanningForPeripheralsWithServiceUUIDs:@[[CBUUID UUIDWithString:HUE_LIGHTS_SERVICE_UUID]]
-                                              afterDiscovery:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
-                                                  [self connectPeripheral:peripheral];
+                                              afterDiscovery:^(BlueCapPeripheral* cperipheral, NSNumber* RSSI) {
+                                                  self.connectedPeripheral = cperipheral;
+                                                  [self connectPeripheral:cperipheral];
                                                   [self stopScanning];
                                               }
          ];
@@ -91,6 +114,7 @@
     [central stopScanning];
 }
 
+// bonded connection
 - (void)connectPeripheral:(BlueCapPeripheral*)peripheral {
     [peripheral connect:^(BlueCapPeripheral* cperipheral, NSError* error) {
             if (error) {
@@ -122,25 +146,10 @@
 }
 
 - (void)getCharacteristics:(BlueCapService*)service {
-    [service discoverAllCharacteritics:^(NSArray* characteristics) {
-        for (BlueCapCharacteristic* characteristic in characteristics) {
-            [characteristic readData:^(BlueCapCharacteristic* __characteristic, NSError* error) {
-                DLog(@"Characteristic:%@, Value: %@", __characteristic.profile.name, [__characteristic stringValue]);
-            }];
-        }
-    }];
+    [service discoverAllCharacteritics:nil];
 }
 
-- (void)setBonded:(BOOL)bonded {
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    [standardDefaults setBool:bonded forKey:@"bonded"];
-}
-
-- (BOOL)bonded {
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    return [standardDefaults boolForKey:@"bonded"];
-}
-
+// bond connection
 - (void)bond:(BlueCapPeripheral*)peripheral {
     [peripheral connect:^(BlueCapPeripheral* cperipheral, NSError* error) {
             if (error) {
@@ -150,6 +159,7 @@
                 [cperipheral discoverAllServicesAndCharacteristics:^(BlueCapPeripheral* dperipheral, NSError* error) {
                     if (!error) {
                         if ([dperipheral serviceWithUUID:HUE_LIGHTS_SERVICE_UUID]) {
+                            self.connectedPeripheral = dperipheral;
                             [self setBonded:YES];
                             [self stopScanning];
                         }
@@ -165,6 +175,17 @@
         
         }
      ];
+}
+
+// connection utils
+- (void)setBonded:(BOOL)bonded {
+    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
+    [standardDefaults setBool:bonded forKey:@"bonded"];
+}
+
+- (BOOL)bonded {
+    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
+    return [standardDefaults boolForKey:@"bonded"];
 }
 
 - (void)timeoutBondedScan {
@@ -184,11 +205,11 @@
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerAfterViewController:(UIViewController*)viewController {
     UIViewController* nextViewController = nil;
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
+        nextViewController = [self.pages objectAtIndex:1];
     } else if ([viewController isKindOfClass:[HueSwitchScenesViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureLocationViewController"];
-    } else if ([viewController isKindOfClass:[HueSwitchConfigureLocationViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
+        nextViewController = [self.pages objectAtIndex:2];
+    } else if ([viewController isKindOfClass:[HueSwitchLocationViewController class]]) {
+        nextViewController = [self.pages objectAtIndex:0];
     }
     return nextViewController;
 }
@@ -196,11 +217,11 @@
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     UIViewController* nextViewController = nil;
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchConfigureLocationViewController"];
+        nextViewController = [self.pages objectAtIndex:2];
     } else if ([viewController isKindOfClass:[HueSwitchScenesViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
-    } else if ([viewController isKindOfClass:[HueSwitchConfigureLocationViewController class]]) {
-        nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
+        nextViewController = [self.pages objectAtIndex:0];
+    } else if ([viewController isKindOfClass:[HueSwitchLocationViewController class]]) {
+        nextViewController = [self.pages objectAtIndex:1];
     }
     return nextViewController;
 }

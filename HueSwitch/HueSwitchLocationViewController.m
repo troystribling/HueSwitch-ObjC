@@ -1,21 +1,21 @@
 //
-//  HueSwitchScenesViewController.m
+//  HueSwitchLocationViewController.m
 //  HueSwitch
 //
 //  Created by Troy Stribling on 3/1/14.
 //  Copyright (c) 2014 gnos.us. All rights reserved.
 //
 
-#import <BlueCap/BlueCap.h>
-#import "HueSwitchScenesViewController.h"
+#import <BlueCap/Bluecap.h>
+#import "HueSwitchLocationViewController.h"
 
-@interface HueSwitchScenesViewController ()
+@interface HueSwitchLocationViewController ()
 
 @property (nonatomic, retain) BlueCapPeripheral* connectedPeripheral;
 
 @end
 
-@implementation HueSwitchScenesViewController
+@implementation HueSwitchLocationViewController
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -36,25 +36,9 @@
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context {
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(connectedPeripheral))]) {
         if ([[change objectForKey:NSKeyValueChangeKindKey] integerValue] == NSKeyValueChangeSetting)
-            DLog(@"HueSwitchScenesViewController: %@ updated: %@", keyPath, change);
+            DLog(@"HueSwitchLocationViewController: %@ updated: %@", keyPath, change);
         self.connectedPeripheral = [change objectForKey:NSKeyValueChangeNewKey];
     }
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"HueSwitchSceneCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    return cell;
 }
 
 @end

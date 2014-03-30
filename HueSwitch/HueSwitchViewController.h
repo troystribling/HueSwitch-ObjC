@@ -10,5 +10,4 @@
 
 @interface HueSwitchViewController : UIViewController  <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
-
 @end
