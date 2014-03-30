@@ -81,7 +81,6 @@
     } else {
         [central startScanning:^(BlueCapPeripheral* peripheral, NSNumber* RSSI) {
             [self bond:peripheral];
-            [self stopScanning];
         }];
     }
 }
@@ -149,12 +148,10 @@
                 [self startScanning];
             } else {
                 [cperipheral discoverAllServicesAndCharacteristics:^(BlueCapPeripheral* dperipheral, NSError* error) {
-                    [dperipheral disconnect];
                     if (!error) {
                         if ([dperipheral serviceWithUUID:HUE_LIGHTS_SERVICE_UUID]) {
                             [self setBonded:YES];
                             [self stopScanning];
-                            [self startScanning];
                         }
                     }
                 }];
