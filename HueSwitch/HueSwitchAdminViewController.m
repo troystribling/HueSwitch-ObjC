@@ -41,4 +41,10 @@
     }
 }
 
+- (void)peripheralDiscoveryComplete:(NSNotification*)notification {
+    if ([[notification name] isEqualToString:@"HueLightsServicelDiscoveryComplete"]) {
+        DLog(@"HueSwitchAdminViewController: Hue Lights Service Discovery Complete");
+    }
+}
+
 @end

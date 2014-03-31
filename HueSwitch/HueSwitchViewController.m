@@ -26,6 +26,8 @@
 @property(nonatomic, retain) HueSwitchAdminViewController*  adminViewController;
 @property(nonatomic, assign) NSInteger                      connectionStatus;
 
+- (void)addViews;
+- (void)addPageView;
 - (void)powerOn;
 - (void)startScanning;
 - (void)stopScanning;
@@ -51,6 +53,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self addPageView];
+    [self addViews];
+    [self powerOn];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Initialization -
+
+- (void)addViews {
+    NSNotificationCenter* notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    HueSwitchStatusViewController* statusController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
+    [self addObserver:statusController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    [notificationCenter addObserver:statusController selector:@selector(peripheralDiscoveryComplete:) name:@"HueLightsServicelDiscoveryComplete" object:self];
+    
+    HueSwitchScenesViewController* scenesController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
+    [self addObserver:scenesController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    [notificationCenter addObserver:scenesController selector:@selector(peripheralDiscoveryComplete:) name:@"HueLightsServicelDiscoveryComplete" object:self];
+    
+    HueSwitchLocationViewController* locationsController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchLocationViewController"];
+    [self addObserver:locationsController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    [notificationCenter addObserver:locationsController selector:@selector(peripheralDiscoveryComplete:) name:@"GnosusLocationDiscoveryComplete" object:self];
+    
+    self.pages = @[statusController, scenesController, locationsController];
+    
+    self.adminViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchAdminViewController"];
+    [self addObserver:self.adminViewController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
+    [notificationCenter addObserver:self.adminViewController selector:@selector(peripheralDiscoveryComplete:) name:@"HueLightsServicelDiscoveryComplete" object:self];
+}
+
+- (void)addPageView {
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
     self.pageViewController.dataSource = self;
     self.pageViewController.delegate = self;
@@ -61,23 +97,9 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
-    HueSwitchStatusViewController* statusController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
-    [self addObserver:statusController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
-    HueSwitchScenesViewController* scenesController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
-    [self addObserver:scenesController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
-    HueSwitchLocationViewController* locationsController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
-    [self addObserver:locationsController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
-    self.pages = @[statusController, scenesController, locationsController];
-    self.adminViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchAdminViewController"];
-    [self addObserver:self.adminViewController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
-    [self powerOn];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark - Private -
+#pragma mark - Communications - 
 
 - (void)powerOn {
     BlueCapCentralManager* central = [BlueCapCentralManager sharedInstance];
@@ -146,7 +168,14 @@
 }
 
 - (void)getCharacteristics:(BlueCapService*)service {
-    [service discoverAllCharacteritics:nil];
+    [service discoverAllCharacteritics:^(NSArray* characteristics) {
+        if ([[service.UUID stringValue] isEqualToString:HUE_LIGHTS_SERVICE_UUID]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HueLightsServicelDiscoveryComplete" object:self];
+        } else if ([[service.UUID stringValue] isEqualToString:GNOSUS_LOCATION_SERVICE_UUID]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"GnosusLocationServicelDiscoveryComplete" object:self];
+        } else if ([[service.UUID stringValue] isEqualToString:GNOSUS_EPOC_TIME_SERVICE_UUID]) {
+        }
+    }];
 }
 
 // bond connection

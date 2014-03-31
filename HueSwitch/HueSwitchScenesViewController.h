@@ -10,4 +10,6 @@
 
 @interface HueSwitchScenesViewController : UITableViewController
 
+- (void)peripheralDiscoveryComplete:(NSNotification*)notification;
+
 @end

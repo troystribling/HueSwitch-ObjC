@@ -10,4 +10,6 @@
 
 @interface HueSwitchLocationViewController : UIViewController
 
+- (void)peripheralDiscoveryComplete:(NSNotification*)notification;
+
 @end

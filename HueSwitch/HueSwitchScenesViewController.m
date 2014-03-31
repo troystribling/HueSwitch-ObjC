@@ -41,6 +41,12 @@
     }
 }
 
+- (void)peripheralDiscoveryComplete:(NSNotification*)notification {
+    if ([[notification name] isEqualToString:@"HueLightsServicelDiscoveryComplete"]) {
+        DLog(@"HueSwitchScenesViewController: Hue Lights Service Discovery Complete");
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

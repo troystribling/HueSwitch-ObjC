@@ -10,4 +10,6 @@
 
 @interface HueSwitchAdminViewController : UIViewController
 
+- (void)peripheralDiscoveryComplete:(NSNotification*)notification;
+
 @end

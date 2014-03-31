@@ -41,4 +41,10 @@
     }
 }
 
+- (void)peripheralDiscoveryComplete:(NSNotification*)notification {
+    if ([[notification name] isEqualToString:@"GnosusLocationDiscoveryComplete"]) {
+        DLog(@"HueSwitchLocationViewController: Gnosus Location Service Discovery Complete");
+    }
+}
+
 @end
