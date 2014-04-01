@@ -20,7 +20,7 @@
 #pragma mark - Scenes Service -
 
     [profileManager createServiceWithUUID:HUE_LIGHTS_SERVICE_UUID
-                                     name:@"Hue Lights Scenes"
+                                     name:@"Hue Lights"
                                andProfile:^(BlueCapServiceProfile* serviceProfile) {
                                    
                                    // number of configured scenes

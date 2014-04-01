@@ -9,6 +9,7 @@
 #import <BlueCap/BlueCap.h>
 #import "HueSwitchProfile.h"
 #import "HueSwitchStatusViewController.h"
+#import "UIAlertView+Extensions.h"
 
 @interface HueSwitchStatusViewController ()
 
@@ -17,6 +18,7 @@
 @property(nonatomic, retain) BlueCapCharacteristic*     switchCharacteristic;
 @property(nonatomic, retain) BlueCapCharacteristic*     statusCharacteristic;
 
+- (void)startNotifications;
 - (void)updateStatus;
 
 @end
@@ -55,10 +57,6 @@
         if ([[change objectForKey:NSKeyValueChangeKindKey] integerValue] == NSKeyValueChangeSetting) {
             DLog(@"HueSwitchStatusViewController: %@ updated: %@", keyPath, change);
             self.connectedPeripheral = [change objectForKey:NSKeyValueChangeNewKey];
-            self.hueLightsService = [self.connectedPeripheral serviceWithUUID:HUE_LIGHTS_SERVICE_UUID];
-            self.switchCharacteristic = [self.hueLightsService characteristicWithUUID:HUE_LIGHTS_SWITCH_CHARACTERISTIC_UUID];
-            self.statusCharacteristic = [self.hueLightsService characteristicWithUUID:HUE_LIGHTS_STATUS_CHARACTERISTIC_UUID];
-            [self updateStatus];
         }
     }
 }
@@ -66,22 +64,50 @@
 - (void)peripheralDiscoveryComplete:(NSNotification*)notification {
     if ([[notification name] isEqualToString:@"HueLightsServicelDiscoveryComplete"]) {
         DLog(@"HueSwitchStatusViewController: Hue Lights Service Discovery Complete");
+        self.hueLightsService = [self.connectedPeripheral serviceWithUUID:HUE_LIGHTS_SERVICE_UUID];
+        self.switchCharacteristic = [self.hueLightsService characteristicWithUUID:HUE_LIGHTS_SWITCH_CHARACTERISTIC_UUID];
+        self.statusCharacteristic = [self.hueLightsService characteristicWithUUID:HUE_LIGHTS_STATUS_CHARACTERISTIC_UUID];
+        [self startNotifications];
+        [self updateStatus];
     }
 }
 
 #pragma mark - Private -
 
+- (void)startNotifications {
+    [self.switchCharacteristic startNotifications:^{
+        [self.switchCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
+            if (error) {
+                [UIAlertView alertOnError:error];
+            } else {
+                [self updateStatus];
+            }
+        }];
+    }];
+    [self.statusCharacteristic startNotifications:^ {
+        [self.statusCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
+            if (error) {
+                [UIAlertView alertOnError:error];
+            } else {
+                [self updateStatus];
+            }
+        }];
+    }];
+}
+
 - (void)updateStatus {
-    if (self.switchCharacteristic) {
-        [self.switchCharacteristic readData:^(BlueCapCharacteristic* characteristoc, NSError* error) {
-            DLog(@"Switch value: %@", [self.switchCharacteristic stringValue]);
-        }];
-    }
-    if (self.statusCharacteristic) {
-        [self.statusCharacteristic readData:^(BlueCapCharacteristic* characteristoc, NSError* error) {
-            DLog(@"Status value: %@", [self.statusCharacteristic stringValue]);
-        }];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.switchCharacteristic) {
+            [self.switchCharacteristic readData:^(BlueCapCharacteristic* characteristoc, NSError* error) {
+                DLog(@"Switch value: %@", [self.switchCharacteristic stringValue]);
+            }];
+        }
+        if (self.statusCharacteristic) {
+            [self.statusCharacteristic readData:^(BlueCapCharacteristic* characteristoc, NSError* error) {
+                DLog(@"Status value: %@", [self.statusCharacteristic stringValue]);
+            }];
+        }
+    });
 }
 
 @end

@@ -208,6 +208,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="connectionStatusButton" destination="YdX-vz-d6m" id="lDA-Jf-uGE"/>
+                        <outlet property="connectionStatusImageView" destination="5G3-aF-lb8" id="fod-aI-f5X"/>
+                        <outlet property="switchButton" destination="dTH-9u-CXC" id="Am7-ub-XcA"/>
+                        <outlet property="switchImageView" destination="x6J-Hl-6Sj" id="guH-lz-Z0S"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h2U-lL-Lgx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

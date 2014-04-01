@@ -10,6 +10,7 @@
 		050EA8CA18C446ED00D388D1 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 050EA8C918C446ED00D388D1 /* CoreBluetooth.framework */; };
 		050EA8CB18C446F400D388D1 /* libBluecap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 050EA8C618C446D000D388D1 /* libBluecap.a */; };
 		050EA8DB18C6D3A400D388D1 /* HueSwitchProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 050EA8DA18C6D3A400D388D1 /* HueSwitchProfile.m */; };
+		0519D42918EB11EE00F117FE /* UIAlertView+Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0519D42818EB11EE00F117FE /* UIAlertView+Extensions.m */; };
 		052B396D18C27A290077896B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B396C18C27A290077896B /* Foundation.framework */; };
 		052B396F18C27A290077896B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B396E18C27A290077896B /* CoreGraphics.framework */; };
 		052B397118C27A290077896B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 052B397018C27A290077896B /* UIKit.framework */; };
@@ -66,6 +67,8 @@
 		050EA8C918C446ED00D388D1 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		050EA8D918C6D3A400D388D1 /* HueSwitchProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSwitchProfile.h; sourceTree = "<group>"; };
 		050EA8DA18C6D3A400D388D1 /* HueSwitchProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchProfile.m; sourceTree = "<group>"; };
+		0519D42718EB11EE00F117FE /* UIAlertView+Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Extensions.h"; sourceTree = "<group>"; };
+		0519D42818EB11EE00F117FE /* UIAlertView+Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Extensions.m"; sourceTree = "<group>"; };
 		052B396918C27A290077896B /* HueSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HueSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		052B396C18C27A290077896B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		052B396E18C27A290077896B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -182,6 +185,8 @@
 				052B398418C27A290077896B /* Images.xcassets */,
 				052B397E18C27A290077896B /* Main.storyboard */,
 				052B397318C27A290077896B /* Supporting Files */,
+				0519D42718EB11EE00F117FE /* UIAlertView+Extensions.h */,
+				0519D42818EB11EE00F117FE /* UIAlertView+Extensions.m */,
 			);
 			path = HueSwitch;
 			sourceTree = "<group>";
@@ -345,6 +350,7 @@
 				052B39A318C28E9A0077896B /* HueSwitchStatusViewController.m in Sources */,
 				052B398318C27A290077896B /* HueSwitchViewController.m in Sources */,
 				052B397D18C27A290077896B /* HueSwitchAppDelegate.m in Sources */,
+				0519D42918EB11EE00F117FE /* UIAlertView+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

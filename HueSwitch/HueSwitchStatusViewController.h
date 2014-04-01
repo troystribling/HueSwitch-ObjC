@@ -10,6 +10,11 @@
 
 @interface HueSwitchStatusViewController : UIViewController
 
+@property(nonatomic, retain) IBOutlet UIImageView*  connectionStatusImageView;
+@property(nonatomic, retain) IBOutlet UIImageView*  switchImageView;
+@property(nonatomic, retain) IBOutlet UIButton*     connectionStatusButton;
+@property(nonatomic, retain) IBOutlet UIButton*     switchButton;
+
 - (void)peripheralDiscoveryComplete:(NSNotification*)notification;
 
 @end

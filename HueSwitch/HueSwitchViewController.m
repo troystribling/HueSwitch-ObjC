@@ -15,7 +15,7 @@
 #import "HueSwitchAdminViewController.h"
 
 #define RECONNECT_DELAY                 5.0f
-#define SCAN_TIMEOUT                    10.0f
+#define SCAN_TIMEOUT                    120.0f
 
 @interface HueSwitchViewController ()
 
@@ -31,14 +31,17 @@
 - (void)powerOn;
 - (void)startScanning;
 - (void)stopScanning;
+
 - (void)connectPeripheral:(BlueCapPeripheral*)peripheral;
 - (void)getServices:(BlueCapPeripheral*)peripheral;
 - (void)getCharacteristics:(BlueCapService*)service;
+
 - (void)bond:(BlueCapPeripheral*)peripheral;
+
 - (void)setBonded:(BOOL)bonded;
 - (BOOL)bonded;
 - (void)timeoutBondedScan;
-
+- (void)postNotifications:(BlueCapService*)service;
 @end
 
 @implementation HueSwitchViewController
@@ -169,12 +172,7 @@
 
 - (void)getCharacteristics:(BlueCapService*)service {
     [service discoverAllCharacteritics:^(NSArray* characteristics) {
-        if ([[service.UUID stringValue] isEqualToString:HUE_LIGHTS_SERVICE_UUID]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"HueLightsServicelDiscoveryComplete" object:self];
-        } else if ([[service.UUID stringValue] isEqualToString:GNOSUS_LOCATION_SERVICE_UUID]) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"GnosusLocationServicelDiscoveryComplete" object:self];
-        } else if ([[service.UUID stringValue] isEqualToString:GNOSUS_EPOC_TIME_SERVICE_UUID]) {
-        }
+        [self postNotifications:service];
     }];
 }
 
@@ -191,6 +189,9 @@
                             self.connectedPeripheral = dperipheral;
                             [self setBonded:YES];
                             [self stopScanning];
+                            for (BlueCapService* service in [dperipheral services]) {
+                                [self postNotifications:service];
+                            }
                         }
                     }
                 }];
@@ -225,6 +226,18 @@
             [self stopScanning];
             [self setBonded:NO];
             [self startScanning];
+        }
+    });
+}
+
+- (void)postNotifications:(BlueCapService*)service {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if ([[service.UUID stringValue] isEqualToString:HUE_LIGHTS_SERVICE_UUID]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"HueLightsServicelDiscoveryComplete" object:self];
+        } else if ([[service.UUID stringValue] isEqualToString:GNOSUS_LOCATION_SERVICE_UUID]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"GnosusLocationDiscoveryComplete" object:self];
+        } else if ([[service.UUID stringValue] isEqualToString:GNOSUS_EPOC_TIME_SERVICE_UUID]) {
+            DLog(@"GNOSUS_EPOC_TIME_SERVICE_UUID DiscoveryComplete");
         }
     });
 }
