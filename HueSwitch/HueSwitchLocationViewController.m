@@ -11,8 +11,6 @@
 
 @interface HueSwitchLocationViewController ()
 
-@property(nonatomic, retain) BlueCapPeripheral* connectedPeripheral;
-
 @end
 
 @implementation HueSwitchLocationViewController

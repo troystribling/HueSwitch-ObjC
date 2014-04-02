@@ -11,8 +11,6 @@
 
 @interface HueSwitchAdminViewController ()
 
-@property(nonatomic, retain) BlueCapPeripheral* connectedPeripheral;
-
 @end
 
 @implementation HueSwitchAdminViewController

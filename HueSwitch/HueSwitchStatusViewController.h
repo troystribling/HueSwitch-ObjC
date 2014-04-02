@@ -10,6 +10,8 @@
 
 @interface HueSwitchStatusViewController : UIViewController
 
+@property(nonatomic, retain) BlueCapPeripheral*     connectedPeripheral;
+
 @property(nonatomic, retain) IBOutlet UIImageView*  connectionStatusImageView;
 @property(nonatomic, retain) IBOutlet UIImageView*  switchImageView;
 @property(nonatomic, retain) IBOutlet UIButton*     connectionStatusButton;

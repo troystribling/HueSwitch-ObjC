@@ -17,7 +17,7 @@
 #define HUE_LIGHTS_NUMBER_OF_LIGHTS_CHARACTERISTIC_UUID     @"2f0a0025-69aa-f316-3e78-4194989a6c1a"
 #define HUE_LIGHTS_LIGHT_COLOR_CHARACTERISTIC_UUID          @"2f0a0022-69aa-f316-3e78-4194989a6c1a"
 #define HUE_LIGHTS_COMMAND_CHARACTERISTIC_UUID              @"2f0a0024-69aa-f316-3e78-4194989a6c1a"
-#define HUE_LIGHTS_SWITCH_CHARACTERISTIC_UUID               @"2f0a0028-69aa-f316-3e78-4194989a6c1a"
+#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_CHARACTERISTIC_UUID    @"2f0a0028-69aa-f316-3e78-4194989a6c1a"
 #define HUE_LIGHTS_STATUS_CHARACTERISTIC_UUID               @"2f0a0027-69aa-f316-3e78-4194989a6c1a"
 
 #define HUE_LIGHTS_NUMBER_OF_SCENES     @"Number of Scenes"
@@ -31,16 +31,19 @@
 #define HUE_LIGHTS_LIGHT_COLOR_SATUARTION   @"Light Saturation"
 #define HUE_LIGHTS_LIGHT_COLOR_BRIGHTNESS   @"Light Brightness"
 
-#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF        @"Off"
-#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF_VALUE  0x00
-#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON         @"On"
-#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON_VALUE   0x01
+#define HUE_LIGHTS_SWITCH_ALL_LIGHTS                    @"Switch"
+#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF                @"Off"
+#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF_VALUE          0x00
+#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON                 @"On"
+#define HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON_VALUE           0x01
 
+#define HUE_LIGHTS_STATUS                               @"Status"
 #define HUE_LIGHTS_STATUS_OFF_LINE                      @"Off Line"
 #define HUE_LIGHTS_STATUS_OFF_LINE_VALUE                0x00
 #define HUE_LIGHTS_STATUS_ON_LINE                       @"On Line"
 #define HUE_LIGHTS_STATUS_ON_LINE_VALUE                 0x01
 
+#define HUE_LIGHTS_COMMAND                              @"Command"
 #define HUE_LIGHTS_COMMAND_ADD_SCENE                    @"Add Scene"
 #define HUE_LIGHTS_COMMAND_ADD_SCENE_VALUE              0x00
 #define HUE_LIGHTS_COMMAND_REMOVE_SCENE                 @"Remove Scene"

@@ -245,27 +245,41 @@
 #pragma mark - UIPageViewControllerDataSource -
 
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerAfterViewController:(UIViewController*)viewController {
-    UIViewController* nextViewController = nil;
+    [self addViews];
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
-        nextViewController = [self.pages objectAtIndex:1];
+        HueSwitchScenesViewController* nextViewController = [self.pages objectAtIndex:1];
+        nextViewController.connectedPeripheral = self.connectedPeripheral;
+        return nextViewController;
     } else if ([viewController isKindOfClass:[HueSwitchScenesViewController class]]) {
-        nextViewController = [self.pages objectAtIndex:2];
+        HueSwitchLocationViewController* nextViewController = [self.pages objectAtIndex:2];
+        nextViewController.connectedPeripheral = self.connectedPeripheral;
+        return nextViewController;
     } else if ([viewController isKindOfClass:[HueSwitchLocationViewController class]]) {
-        nextViewController = [self.pages objectAtIndex:0];
+        HueSwitchStatusViewController* nextViewController = [self.pages objectAtIndex:0];
+        nextViewController.connectedPeripheral = self.connectedPeripheral;
+        return nextViewController;
+    } else {
+        return nil;
     }
-    return nextViewController;
 }
 
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    UIViewController* nextViewController = nil;
+    [self addViews];
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
-        nextViewController = [self.pages objectAtIndex:2];
+        HueSwitchLocationViewController* nextViewController = [self.pages objectAtIndex:2];
+        nextViewController.connectedPeripheral = self.connectedPeripheral;
+        return nextViewController;
     } else if ([viewController isKindOfClass:[HueSwitchScenesViewController class]]) {
-        nextViewController = [self.pages objectAtIndex:0];
+        HueSwitchStatusViewController* nextViewController = [self.pages objectAtIndex:0];
+        nextViewController.connectedPeripheral = self.connectedPeripheral;
+        return nextViewController;
     } else if ([viewController isKindOfClass:[HueSwitchLocationViewController class]]) {
-        nextViewController = [self.pages objectAtIndex:1];
+        HueSwitchStatusViewController* nextViewController = [self.pages objectAtIndex:1];
+        nextViewController.connectedPeripheral = self.connectedPeripheral;
+        return nextViewController;
+    } else {
+        return nil;
     }
-    return nextViewController;
 }
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController*)pageViewController {

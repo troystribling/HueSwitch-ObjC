@@ -154,7 +154,7 @@
                                    
                                    // apply commands
                                    [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_COMMAND_CHARACTERISTIC_UUID
-                                                                            name:@"Command"
+                                                                            name:HUE_LIGHTS_COMMAND
                                                                       andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                           characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
                                                                           [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_COMMAND_ADD_SCENE_VALUE)     named:HUE_LIGHTS_COMMAND_ADD_SCENE];
@@ -167,8 +167,8 @@
                                                                      }];
                                    
                                    // turn lights on and off
-                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SWITCH_CHARACTERISTIC_UUID
-                                                                           name:@"Switch"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SWITCH_ALL_LIGHTS_CHARACTERISTIC_UUID
+                                                                           name:HUE_LIGHTS_SWITCH_ALL_LIGHTS
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
                                                                          [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF_VALUE)    named:HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF];
@@ -178,7 +178,7 @@
                                    
                                    // light connection status
                                    [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_STATUS_CHARACTERISTIC_UUID
-                                                                           name:@"Status"
+                                                                           name:HUE_LIGHTS_STATUS
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead | CBCharacteristicPropertyWrite;
                                                                          [characteristicProfile setValue:blueCapUnsignedCharToData(HUE_LIGHTS_STATUS_OFF_LINE_VALUE)    named:HUE_LIGHTS_STATUS_OFF_LINE];

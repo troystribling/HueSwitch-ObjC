@@ -11,8 +11,6 @@
 
 @interface HueSwitchScenesViewController ()
 
-@property(nonatomic, retain) BlueCapPeripheral* connectedPeripheral;
-
 @end
 
 @implementation HueSwitchScenesViewController

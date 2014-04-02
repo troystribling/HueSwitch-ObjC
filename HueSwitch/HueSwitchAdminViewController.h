@@ -10,6 +10,8 @@
 
 @interface HueSwitchAdminViewController : UIViewController
 
+@property(nonatomic, retain) BlueCapPeripheral*     connectedPeripheral;
+
 - (void)peripheralDiscoveryComplete:(NSNotification*)notification;
 
 @end

@@ -10,6 +10,8 @@
 
 @interface HueSwitchScenesViewController : UITableViewController
 
+@property(nonatomic, retain) BlueCapPeripheral*     connectedPeripheral;
+
 - (void)peripheralDiscoveryComplete:(NSNotification*)notification;
 
 @end
