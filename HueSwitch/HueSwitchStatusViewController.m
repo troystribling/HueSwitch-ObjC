@@ -21,6 +21,10 @@
 - (void)updateStatus;
 - (void)updateDisplay;
 
+- (void)errorAlert:(NSError*)error;
+
+- (IBAction)toggleLight:(id)sender;
+
 @end
 
 @implementation HueSwitchStatusViewController
@@ -78,18 +82,14 @@
     [self.switchCharacteristic startNotifications:^{
         [self.switchCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
             if (error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [UIAlertView alertOnError:error];
-                });
+                [self errorAlert:error];
             }
         }];
     }];
     [self.statusCharacteristic startNotifications:^ {
         [self.statusCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
             if (error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [UIAlertView alertOnError:error];
-                });
+                [self errorAlert:error];
             }
         }];
     }];
@@ -139,6 +139,32 @@
         [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
         self.connectionStatusImageView.image = [UIImage imageNamed:@"OutOfRange"];
     }
+}
+
+- (void)errorAlert:(NSError*)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIAlertView alertOnError:error];
+    });
+}
+
+#pragma mark - Actions -
+
+- (IBAction)toggleLight:(id)sender {
+    NSString* value = [[self.switchCharacteristic value] objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS];
+    NSString* newValue = HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON;
+    if ([value isEqualToString:HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON]) {
+        DLog(@"Turn Lights Off");
+        newValue = HUE_LIGHTS_SWITCH_ALL_LIGHTS_OFF;
+    } else {
+        DLog(@"Turn Lights On");
+    }
+    [self.switchCharacteristic writeValueObject:newValue afterWriteCall:^(BlueCapCharacteristic* characteristic, NSError* error) {
+        if (error) {
+            [self errorAlert:error];
+        } else {
+            [self updateStatus];
+        }
+    }];
 }
 
 @end

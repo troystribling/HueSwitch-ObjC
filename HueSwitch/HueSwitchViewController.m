@@ -56,8 +56,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self addPageView];
     [self addViews];
+    [self addPageView];
     [self powerOn];
 }
 
@@ -93,7 +93,7 @@
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
     self.pageViewController.dataSource = self;
     self.pageViewController.delegate = self;
-    [self.pageViewController setViewControllers:@[[self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"]]
+    [self.pageViewController setViewControllers:@[[self.pages objectAtIndex:0]]
                                       direction:UIPageViewControllerNavigationDirectionForward
                                        animated:YES
                                      completion:nil];
@@ -245,7 +245,6 @@
 #pragma mark - UIPageViewControllerDataSource -
 
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerAfterViewController:(UIViewController*)viewController {
-    [self addViews];
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
         HueSwitchScenesViewController* nextViewController = [self.pages objectAtIndex:1];
         nextViewController.connectedPeripheral = self.connectedPeripheral;
@@ -264,7 +263,6 @@
 }
 
 - (UIViewController*)pageViewController:(UIPageViewController*)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    [self addViews];
     if ([viewController isKindOfClass:[HueSwitchStatusViewController class]]) {
         HueSwitchLocationViewController* nextViewController = [self.pages objectAtIndex:2];
         nextViewController.connectedPeripheral = self.connectedPeripheral;
