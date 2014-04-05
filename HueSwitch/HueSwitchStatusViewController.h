@@ -18,5 +18,6 @@
 @property(nonatomic, retain) IBOutlet UIButton*     switchButton;
 
 - (void)peripheralDiscoveryComplete:(NSNotification*)notification;
+- (void)peripheralDisconnected:(NSNotification*)notification;
 
 @end

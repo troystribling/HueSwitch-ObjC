@@ -15,7 +15,7 @@
 #import "HueSwitchAdminViewController.h"
 
 #define RECONNECT_DELAY                 5.0f
-#define SCAN_TIMEOUT                    20.0f
+#define SCAN_TIMEOUT                    120.0f
 
 @interface HueSwitchViewController ()
 
@@ -41,7 +41,8 @@
 - (void)setBonded:(BOOL)bonded;
 - (BOOL)bonded;
 - (void)timeoutBondedScan;
-- (void)postNotifications:(BlueCapService*)service;
+- (void)postPeripheralDisconnectedNotifications;
+- (void)postDiscoveryCompleteNotifications:(BlueCapService*)service;
 @end
 
 @implementation HueSwitchViewController
@@ -73,6 +74,7 @@
     HueSwitchStatusViewController* statusController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchStatusViewController"];
     [self addObserver:statusController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
     [notificationCenter addObserver:statusController selector:@selector(peripheralDiscoveryComplete:) name:@"HueLightsServicelDiscoveryComplete" object:self];
+    [notificationCenter addObserver:statusController selector:@selector(peripheralDisconnected:) name:@"PeripheralDisconnected" object:self];
     
     HueSwitchScenesViewController* scenesController = [self.storyboard instantiateViewControllerWithIdentifier:@"HueSwitchScenesViewController"];
     [self addObserver:scenesController forKeyPath:NSStringFromSelector(@selector(connectedPeripheral)) options:NSKeyValueObservingOptionNew context:nil];
@@ -150,6 +152,7 @@
             }
         } afterPeripheralDisconnect:^(BlueCapPeripheral* dperipheral) {
             DLog(@"Disconnected attempting reconnect");
+            [self postPeripheralDisconnectedNotifications];
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(RECONNECT_DELAY * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^{
                 [self connectPeripheral:dperipheral];
@@ -172,7 +175,7 @@
 
 - (void)getCharacteristics:(BlueCapService*)service {
     [service discoverAllCharacteritics:^(NSArray* characteristics) {
-        [self postNotifications:service];
+        [self postDiscoveryCompleteNotifications:service];
     }];
 }
 
@@ -190,7 +193,7 @@
                             [self setBonded:YES];
                             [self stopScanning];
                             for (BlueCapService* service in [dperipheral services]) {
-                                [self postNotifications:service];
+                                [self postDiscoveryCompleteNotifications:service];
                             }
                         }
                     }
@@ -198,6 +201,7 @@
             }
         } afterPeripheralDisconnect:^(BlueCapPeripheral* dperipheral) {
             DLog(@"Disconnected attempting reconnect");
+            [self postPeripheralDisconnectedNotifications];
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(RECONNECT_DELAY * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^{
                 [self bond:dperipheral];
@@ -230,7 +234,11 @@
     });
 }
 
-- (void)postNotifications:(BlueCapService*)service {
+- (void)postPeripheralDisconnectedNotifications {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PeripheralDisconnected" object:self];
+}
+
+- (void)postDiscoveryCompleteNotifications:(BlueCapService*)service {
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([[service.UUID stringValue] isEqualToString:HUE_LIGHTS_SERVICE_UUID]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"HueLightsServicelDiscoveryComplete" object:self];

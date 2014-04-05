@@ -17,9 +17,12 @@
 @property(nonatomic, retain) BlueCapCharacteristic*     switchCharacteristic;
 @property(nonatomic, retain) BlueCapCharacteristic*     statusCharacteristic;
 
-- (void)startNotifications;
-- (void)updateStatus;
+- (void)startNotifications:(BlueCapCharacteristic*)characteristic;
+- (void)updateStatus:(BlueCapCharacteristic*)characteristic;
 - (void)updateDisplay;
+- (void)updateSwitchDisplay;
+- (void)lightsNotConnected;
+- (void)outOfRange;
 
 - (void)errorAlert:(NSError*)error;
 
@@ -40,12 +43,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self updateStatus];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self updateStatus];
+    [self updateDisplay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -55,6 +57,8 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
+#pragma mark - Notifications -
 
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context {
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(connectedPeripheral))]) {
@@ -71,73 +75,61 @@
         self.hueLightsService = [self.connectedPeripheral serviceWithUUID:HUE_LIGHTS_SERVICE_UUID];
         self.switchCharacteristic = [self.hueLightsService characteristicWithUUID:HUE_LIGHTS_SWITCH_ALL_LIGHTS_CHARACTERISTIC_UUID];
         self.statusCharacteristic = [self.hueLightsService characteristicWithUUID:HUE_LIGHTS_STATUS_CHARACTERISTIC_UUID];
-        [self startNotifications];
-        [self updateStatus];
+        [self updateStatus:self.switchCharacteristic];
+        [self updateStatus:self.statusCharacteristic];
+    }
+}
+
+- (void)peripheralDisconnected:(NSNotification*)notification {
+    if ([[notification name] isEqualToString:@"PeripheralDisconnected"]) {
+        DLog(@"PeripheralDisconnected: peripheral disconnected");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self outOfRange];
+        });
     }
 }
 
 #pragma mark - Private -
 
-- (void)startNotifications {
-    [self.switchCharacteristic startNotifications:^{
-        [self.switchCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
-            if (error) {
-                [self errorAlert:error];
-            }
-        }];
-    }];
-    [self.statusCharacteristic startNotifications:^ {
+- (void)startNotifications:(BlueCapCharacteristic*)characteristic {
+    [characteristic startNotifications:^ {
         [self.statusCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
             if (error) {
-                [self errorAlert:error];
+                if (error) {
+                    [self errorAlert:error];
+                } else {
+                    [self updateDisplay];
+                }
             }
         }];
     }];
 }
 
-- (void)updateStatus {
-    if (self.switchCharacteristic) {
-        [self.switchCharacteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
-            DLog(@"Switch value: %@", [self.switchCharacteristic stringValue]);
+- (void)updateStatus:(BlueCapCharacteristic*)characteristic {
+    [characteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
+        if (error) {
+            [self errorAlert:error];
+        } else {
+            [self startNotifications:characteristic];
             [self updateDisplay];
-        }];
-    }
-    if (self.statusCharacteristic) {
-        [self.statusCharacteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
-            DLog(@"Status value: %@", [self.statusCharacteristic stringValue]);
-            [self updateDisplay];
-        }];
-    }
+        }
+    }];
 }
 
 - (void)updateDisplay {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.switchCharacteristic) {
-            NSString* value = [[self.switchCharacteristic value] objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS];
-            if ([value isEqualToString:HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON]) {
-                [self.switchButton setTitle:@"On" forState:UIControlStateNormal];
-                self.switchImageView.image = [UIImage imageNamed:@"Connect"];
-            } else {
-                [self.switchButton setTitle:@"Off" forState:UIControlStateNormal];
-                self.switchImageView.image = [UIImage imageNamed:@"Disconnect"];
-            }
-        } else {
-            [self.switchButton setTitle:@"Off Line" forState:UIControlStateNormal];
-            self.switchImageView.image = [UIImage imageNamed:@"OutOfRange"];
-        }
-        
         if (self.statusCharacteristic) {
+            DLog(@"Status value: %@", [self.statusCharacteristic stringValue]);
             NSString* value = [[self.statusCharacteristic value] objectForKey:HUE_LIGHTS_STATUS];
             if ([value isEqualToString:HUE_LIGHTS_STATUS_ON_LINE]) {
                 [self.connectionStatusButton setTitle:@"On Line" forState:UIControlStateNormal];
                 self.connectionStatusImageView.image = [UIImage imageNamed:@"Connect"];
+                [self updateSwitchDisplay];
             } else {
-                [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
-                self.connectionStatusImageView.image = [UIImage imageNamed:@"LightsNotConnected"];
+                [self lightsNotConnected];
             }
         } else {
-            [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
-            self.connectionStatusImageView.image = [UIImage imageNamed:@"OutOfRange"];
+            [self outOfRange];
         }
     });
 }
@@ -146,6 +138,37 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIAlertView alertOnError:error];
     });
+}
+
+- (void)lightsNotConnected {
+    [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
+    self.connectionStatusImageView.image = [UIImage imageNamed:@"LightsNotConnected"];
+    [self.switchButton setTitle:@"Off Line" forState:UIControlStateNormal];
+    self.switchImageView.image = [UIImage imageNamed:@"LightsNotConnected"];
+}
+
+- (void)outOfRange {
+    [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
+    self.connectionStatusImageView.image = [UIImage imageNamed:@"OutOfRange"];
+    [self.switchButton setTitle:@"Off Line" forState:UIControlStateNormal];
+    self.switchImageView.image = [UIImage imageNamed:@"OutOfRange"];    
+}
+
+- (void)updateSwitchDisplay {
+    if (self.switchCharacteristic) {
+        DLog(@"Switch value: %@", [self.switchCharacteristic stringValue]);
+        NSString* value = [[self.switchCharacteristic value] objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS];
+        if ([value isEqualToString:HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON]) {
+            [self.switchButton setTitle:@"On" forState:UIControlStateNormal];
+            self.switchImageView.image = [UIImage imageNamed:@"Connect"];
+        } else {
+            [self.switchButton setTitle:@"Off" forState:UIControlStateNormal];
+            self.switchImageView.image = [UIImage imageNamed:@"Disconnect"];
+        }
+    } else {
+        [self.switchButton setTitle:@"Off Line" forState:UIControlStateNormal];
+        self.switchImageView.image = [UIImage imageNamed:@"OutOfRange"];
+    }
 }
 
 #pragma mark - Actions -
@@ -163,7 +186,8 @@
         if (error) {
             [self errorAlert:error];
         } else {
-            [self updateStatus];
+            [self.switchCharacteristic stopNotifications:nil];
+            [self updateStatus:self.switchCharacteristic];
         }
     }];
 }
