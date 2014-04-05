@@ -96,49 +96,50 @@
 }
 
 - (void)updateStatus {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.switchCharacteristic) {
-            [self.switchCharacteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
-                DLog(@"Switch value: %@", [self.switchCharacteristic stringValue]);
-            }];
-        }
-        if (self.statusCharacteristic) {
-            [self.statusCharacteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
-                DLog(@"Status value: %@", [self.statusCharacteristic stringValue]);
-            }];
-        }
-        [self updateDisplay];
-    });
+    if (self.switchCharacteristic) {
+        [self.switchCharacteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
+            DLog(@"Switch value: %@", [self.switchCharacteristic stringValue]);
+            [self updateDisplay];
+        }];
+    }
+    if (self.statusCharacteristic) {
+        [self.statusCharacteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
+            DLog(@"Status value: %@", [self.statusCharacteristic stringValue]);
+            [self updateDisplay];
+        }];
+    }
 }
 
 - (void)updateDisplay {
-    if (self.switchCharacteristic) {
-        NSString* value = [[self.switchCharacteristic value] objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS];
-        if ([value isEqualToString:HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON]) {
-            [self.switchButton setTitle:@"On" forState:UIControlStateNormal];
-            self.switchImageView.image = [UIImage imageNamed:@"Connect"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.switchCharacteristic) {
+            NSString* value = [[self.switchCharacteristic value] objectForKey:HUE_LIGHTS_SWITCH_ALL_LIGHTS];
+            if ([value isEqualToString:HUE_LIGHTS_SWITCH_ALL_LIGHTS_ON]) {
+                [self.switchButton setTitle:@"On" forState:UIControlStateNormal];
+                self.switchImageView.image = [UIImage imageNamed:@"Connect"];
+            } else {
+                [self.switchButton setTitle:@"Off" forState:UIControlStateNormal];
+                self.switchImageView.image = [UIImage imageNamed:@"Disconnect"];
+            }
         } else {
-            [self.switchButton setTitle:@"Off" forState:UIControlStateNormal];
-            self.switchImageView.image = [UIImage imageNamed:@"Disconnect"];
+            [self.switchButton setTitle:@"Off Line" forState:UIControlStateNormal];
+            self.switchImageView.image = [UIImage imageNamed:@"OutOfRange"];
         }
-    } else {
-        [self.switchButton setTitle:@"Off Line" forState:UIControlStateNormal];
-        self.switchImageView.image = [UIImage imageNamed:@"OutOfRange"];
-    }
-    
-    if (self.statusCharacteristic) {
-        NSString* value = [[self.statusCharacteristic value] objectForKey:HUE_LIGHTS_STATUS];
-        if ([value isEqualToString:HUE_LIGHTS_STATUS_ON_LINE]) {
-            [self.connectionStatusButton setTitle:@"On Line" forState:UIControlStateNormal];
-            self.connectionStatusImageView.image = [UIImage imageNamed:@"Connect"];
+        
+        if (self.statusCharacteristic) {
+            NSString* value = [[self.statusCharacteristic value] objectForKey:HUE_LIGHTS_STATUS];
+            if ([value isEqualToString:HUE_LIGHTS_STATUS_ON_LINE]) {
+                [self.connectionStatusButton setTitle:@"On Line" forState:UIControlStateNormal];
+                self.connectionStatusImageView.image = [UIImage imageNamed:@"Connect"];
+            } else {
+                [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
+                self.connectionStatusImageView.image = [UIImage imageNamed:@"LightsNotConnected"];
+            }
         } else {
             [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
-            self.connectionStatusImageView.image = [UIImage imageNamed:@"LightsNotConnected"];
+            self.connectionStatusImageView.image = [UIImage imageNamed:@"OutOfRange"];
         }
-    } else {
-        [self.connectionStatusButton setTitle:@"Off Line" forState:UIControlStateNormal];
-        self.connectionStatusImageView.image = [UIImage imageNamed:@"OutOfRange"];
-    }
+    });
 }
 
 - (void)errorAlert:(NSError*)error {
