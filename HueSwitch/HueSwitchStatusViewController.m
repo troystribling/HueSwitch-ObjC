@@ -95,11 +95,9 @@
     [characteristic startNotifications:^ {
         [self.statusCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
             if (error) {
-                if (error) {
-                    [self errorAlert:error];
-                } else {
-                    [self updateDisplay];
-                }
+                [self errorAlert:error];
+            } else {
+                [self updateDisplay];
             }
         }];
     }];
