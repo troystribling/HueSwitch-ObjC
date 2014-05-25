@@ -15,7 +15,7 @@
 #import "HueSwitchAdminViewController.h"
 
 #define RECONNECT_DELAY                 5.0f
-#define SCAN_TIMEOUT                    120.0f
+#define SCAN_TIMEOUT                    30.0f
 
 @interface HueSwitchViewController ()
 
