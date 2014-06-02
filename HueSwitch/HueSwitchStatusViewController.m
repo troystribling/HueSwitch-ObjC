@@ -9,6 +9,7 @@
 #import <BlueCap/BlueCap.h>
 #import "HueSwitchProfile.h"
 #import "HueSwitchStatusViewController.h"
+#import "HueSwitchConfig.h"
 #import "UIAlertView+Extensions.h"
 
 @interface HueSwitchStatusViewController ()
@@ -23,8 +24,6 @@
 - (void)updateSwitchDisplay;
 - (void)lightsNotConnected;
 - (void)outOfRange;
-
-- (void)errorAlert:(NSError*)error;
 
 - (IBAction)toggleLight:(id)sender;
 
@@ -95,7 +94,7 @@
     [characteristic startNotifications:^ {
         [self.statusCharacteristic receiveUpdates:^(BlueCapCharacteristic* ucharacteristic, NSError* error) {
             if (error) {
-                [self errorAlert:error];
+                [UIAlertView alertOnError:error];
             } else {
                 [self updateDisplay];
             }
@@ -106,7 +105,7 @@
 - (void)updateStatus:(BlueCapCharacteristic*)characteristic {
     [characteristic readData:^(BlueCapCharacteristic* characteristic, NSError* error) {
         if (error) {
-            [self errorAlert:error];
+            [UIAlertView alertOnError:error];
         } else {
             [self startNotifications:characteristic];
             [self updateDisplay];
@@ -129,12 +128,6 @@
         } else {
             [self outOfRange];
         }
-    });
-}
-
-- (void)errorAlert:(NSError*)error {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIAlertView alertOnError:error];
     });
 }
 
@@ -182,7 +175,7 @@
     }
     [self.switchCharacteristic writeValueObject:newValue afterWriteCall:^(BlueCapCharacteristic* characteristic, NSError* error) {
         if (error) {
-            [self errorAlert:error];
+            [UIAlertView alertOnError:error];
         } else {
             [self.switchCharacteristic stopNotifications:nil];
             [self updateStatus:self.switchCharacteristic];

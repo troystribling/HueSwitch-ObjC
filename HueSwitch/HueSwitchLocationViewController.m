@@ -31,6 +31,8 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Notifications -
+
 - (void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)change context:(void*)context {
     if ([keyPath isEqualToString:NSStringFromSelector(@selector(connectedPeripheral))]) {
         if ([[change objectForKey:NSKeyValueChangeKindKey] integerValue] == NSKeyValueChangeSetting)

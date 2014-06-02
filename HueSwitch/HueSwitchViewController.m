@@ -13,6 +13,7 @@
 #import "HueSwitchScenesViewController.h"
 #import "HueSwitchLocationViewController.h"
 #import "HueSwitchAdminViewController.h"
+#import "HueSwitchConfig.h"
 
 #define RECONNECT_DELAY                 5.0f
 #define SCAN_TIMEOUT                    30.0f
@@ -38,8 +39,6 @@
 
 - (void)bond:(BlueCapPeripheral*)peripheral;
 
-- (void)setBonded:(BOOL)bonded;
-- (BOOL)bonded;
 - (void)timeoutBondedScan;
 - (void)postPeripheralDisconnectedNotifications;
 - (void)postDiscoveryCompleteNotifications:(BlueCapService*)service;
@@ -119,7 +118,7 @@
 - (void)startScanning {
     self.scanning = YES;
     BlueCapCentralManager* central = [BlueCapCentralManager sharedInstance];
-    if ([self bonded]) {
+    if ([HueSwitchConfig getBonded]) {
         [self timeoutBondedScan];
         [central startScanningForPeripheralsWithServiceUUIDs:@[[CBUUID UUIDWithString:HUE_LIGHTS_SERVICE_UUID]]
                                               afterDiscovery:^(BlueCapPeripheral* cperipheral, NSNumber* RSSI) {
@@ -190,7 +189,7 @@
                     if (!error) {
                         if ([dperipheral serviceWithUUID:HUE_LIGHTS_SERVICE_UUID]) {
                             self.connectedPeripheral = dperipheral;
-                            [self setBonded:YES];
+                            [HueSwitchConfig setBonded:YES];
                             [self stopScanning];
                             for (BlueCapService* service in [dperipheral services]) {
                                 [self postDiscoveryCompleteNotifications:service];
@@ -212,23 +211,13 @@
 }
 
 // connection utils
-- (void)setBonded:(BOOL)bonded {
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    [standardDefaults setBool:bonded forKey:@"bonded"];
-}
-
-- (BOOL)bonded {
-    NSUserDefaults* standardDefaults = [NSUserDefaults standardUserDefaults];
-    return [standardDefaults boolForKey:@"bonded"];
-}
-
 - (void)timeoutBondedScan {
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SCAN_TIMEOUT * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
         if (self.scanning) {
             DLog(@"Timeout scan");
             [self stopScanning];
-            [self setBonded:NO];
+            [HueSwitchConfig setBonded:NO];
             [self startScanning];
         }
     });

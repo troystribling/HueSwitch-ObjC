@@ -15,7 +15,9 @@
 }
 
 + (void)alertOnError:(NSError*)error {
-    [self alertOnError:error withDelegate:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self alertOnError:error withDelegate:nil];
+    });
 }
 
 + (void)showMessage:(NSString*)msg {

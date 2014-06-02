@@ -24,21 +24,21 @@
                                andProfile:^(BlueCapServiceProfile* serviceProfile) {
                                    
                                    // number of configured scenes
-                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_NUMBER_OF_SCENES_CHARACTERISTIC_UUID
-                                                                           name:@"Number of Scenes"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_SCENES_COUNT_CHARACTERISTIC_UUID
+                                                                           name:@"Scenes Count"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead;
                                                                          [characteristicProfile deserializeData:^NSDictionary*(NSData* data) {
-                                                                             return @{HUE_LIGHTS_NUMBER_OF_SCENES:blueCapUnsignedCharFromData(data, NSMakeRange(0, 1))};
+                                                                             return @{HUE_LIGHTS_SCENES_COUNT:blueCapUnsignedCharFromData(data, NSMakeRange(0, 1))};
                                                                          }];
                                                                          [characteristicProfile stringValue:^NSDictionary*(NSDictionary* data) {
-                                                                             return @{HUE_LIGHTS_NUMBER_OF_SCENES:[[data objectForKey:HUE_LIGHTS_NUMBER_OF_SCENES] stringValue]};
+                                                                             return @{HUE_LIGHTS_SCENES_COUNT:[[data objectForKey:HUE_LIGHTS_SCENES_COUNT] stringValue]};
                                                                          }];
                                                                          [characteristicProfile serializeString:^NSData*(NSDictionary* data) {
-                                                                             uint8_t value = [[data objectForKey:HUE_LIGHTS_NUMBER_OF_SCENES] intValue];
+                                                                             uint8_t value = [[data objectForKey:HUE_LIGHTS_SCENES_COUNT] intValue];
                                                                              return blueCapUnsignedCharToData(value);
                                                                          }];
-                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromString:@{HUE_LIGHTS_NUMBER_OF_SCENES:[NSString stringWithFormat:@"%d", 10]}];
+                                                                         characteristicProfile.initialValue = [characteristicProfile valueFromString:@{HUE_LIGHTS_SCENES_COUNT:[NSString stringWithFormat:@"%d", 10]}];
                                                                      }];
                                    
                                    // displayed scene ID
@@ -103,15 +103,15 @@
                                                                      }];
                                    
                                    // number of lights
-                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_NUMBER_OF_LIGHTS_CHARACTERISTIC_UUID
-                                                                           name:@"Number of Lights"
+                                   [serviceProfile createCharacteristicWithUUID:HUE_LIGHTS_LIGHTS_COUNT_CHARACTERISTIC_UUID
+                                                                           name:@"Lights Count"
                                                                      andProfile:^(BlueCapCharacteristicProfile* characteristicProfile) {
                                                                          characteristicProfile.properties = CBCharacteristicPropertyRead;
                                                                          [characteristicProfile deserializeData:^NSDictionary*(NSData* data) {
-                                                                             return @{HUE_LIGHTS_NUMBER_OF_LIGHTS:blueCapUnsignedCharFromData(data, NSMakeRange(0, 1))};
+                                                                             return @{HUE_LIGHTS_LIGHTS_COUNT:blueCapUnsignedCharFromData(data, NSMakeRange(0, 1))};
                                                                          }];
                                                                          [characteristicProfile stringValue:^NSDictionary*(NSDictionary* data) {
-                                                                             return @{HUE_LIGHTS_NUMBER_OF_LIGHTS:[[data objectForKey:HUE_LIGHTS_NUMBER_OF_LIGHTS] stringValue]};
+                                                                             return @{HUE_LIGHTS_LIGHTS_COUNT:[[data objectForKey:HUE_LIGHTS_LIGHTS_COUNT] stringValue]};
                                                                          }];
                                                                          [characteristicProfile serializeString:^NSData*(NSDictionary* data) {
                                                                              uint8_t value = [[data objectForKey:HUE_LIGHTS_CURRENT_SCENE_ID] intValue];

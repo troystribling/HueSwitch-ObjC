@@ -29,6 +29,7 @@
 		052B39A918C28F220077896B /* HueSwitchLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B39A818C28F220077896B /* HueSwitchLocationViewController.m */; };
 		052B39AC18C28FBE0077896B /* HueSwitchScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B39AB18C28FBE0077896B /* HueSwitchScenesViewController.m */; };
 		052B39C218C407640077896B /* HueSwitchAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 052B39C118C407640077896B /* HueSwitchAdminViewController.m */; };
+		05B45241193AB857005F2C8A /* HueSwitchConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 05B45240193AB857005F2C8A /* HueSwitchConfig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,8 @@
 		052B39AB18C28FBE0077896B /* HueSwitchScenesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchScenesViewController.m; sourceTree = "<group>"; };
 		052B39C018C407640077896B /* HueSwitchAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSwitchAdminViewController.h; sourceTree = "<group>"; };
 		052B39C118C407640077896B /* HueSwitchAdminViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchAdminViewController.m; sourceTree = "<group>"; };
+		05B4523F193AB857005F2C8A /* HueSwitchConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSwitchConfig.h; sourceTree = "<group>"; };
+		05B45240193AB857005F2C8A /* HueSwitchConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSwitchConfig.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +175,8 @@
 				052B39C118C407640077896B /* HueSwitchAdminViewController.m */,
 				052B397B18C27A290077896B /* HueSwitchAppDelegate.h */,
 				052B397C18C27A290077896B /* HueSwitchAppDelegate.m */,
+				05B4523F193AB857005F2C8A /* HueSwitchConfig.h */,
+				05B45240193AB857005F2C8A /* HueSwitchConfig.m */,
 				052B39A718C28F220077896B /* HueSwitchLocationViewController.h */,
 				052B39A818C28F220077896B /* HueSwitchLocationViewController.m */,
 				050EA8D918C6D3A400D388D1 /* HueSwitchProfile.h */,
@@ -350,6 +355,7 @@
 				052B39A318C28E9A0077896B /* HueSwitchStatusViewController.m in Sources */,
 				052B398318C27A290077896B /* HueSwitchViewController.m in Sources */,
 				052B397D18C27A290077896B /* HueSwitchAppDelegate.m in Sources */,
+				05B45241193AB857005F2C8A /* HueSwitchConfig.m in Sources */,
 				0519D42918EB11EE00F117FE /* UIAlertView+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
